@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bosses - Elden List</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="icon" href="assets/icone_elden.png" type="image/png" />
+</head>
+
+<body>
+    <header class="main-header">
+    <div class="header-left">
+        <img src="assets/icone_elden.png" alt="Ícone Elden Ring" class="header-icon" />
+        <h1>Elden List</h1>
+    </div>
+    
+    <div class="header-right">
+        <div class="header-controls">
+            <button id="btnFeitos">Ver feitos ✅</button>
+            <button id="btnNaoFeitos">Ver não feitos ❌</button>
+            <input type="file" id="importarArquivo" style="display: none" accept=".txt" />
+            <button id="btnImportar">Importar feitos ⬆</button>
+            <button id="btnExportar">Exportar feitos ⬇</button>
+        </div>
+        <div class="search-wrapper">
+            <input type="text" placeholder="Pesquisar boss..." id="searchInput" class="search-bar" />
+        </div>
+    </div>
+</header>
+
+
+    <div class="barra-progresso-wrapper">
+        <div class="barra-progresso">
+            <div class="progresso" id="barraProgresso"></div>
+        </div>
+        <div id="textoProgresso">0% concluído</div>
+    </div>
+
+    <main>
+        <section id="bossesGrid" class="grid-container"></section>
+    </main>
+
+    <div id="bossModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn" id="closeModal">&times;</span>
+            <h2 id="modalName"></h2>
+            <img id="modalImage" src="" alt="" />
+            <p id="modalDescription"></p>
+            <p><strong>Localização:</strong> <span id="modalLocation"></span></p>
+            <p><strong>Drops:</strong> <span id="modalDrops"></span></p>
+            <p><strong>HP:</strong> <span id="modalHealth"></span></p>
+        </div>
+    </div>
+
+    <script src="js/bosses.js"></script>
+</body>
+
+</html>
