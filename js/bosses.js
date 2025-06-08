@@ -160,14 +160,21 @@ async function loadAllBosses() {
   let allBosses = [];
   const limit = 500;
 
-  while (true) {
-    const res = await fetch(`https://eldenring.fanapis.com/api/bosses?limit=${limit}&page=${page}`);
-    const data = await res.json();
+  try {
+    while (true) {
+      const res = await fetch(
+        `https://eldenring.fanapis.com/api/bosses?limit=${limit}&page=${page}`
+      );
+      const data = await res.json();
 
-    if (!data.data || data.data.length === 0) break;
+      if (!data.data || data.data.length === 0) break;
 
-    allBosses = allBosses.concat(data.data);
-    page++;
+      allBosses = allBosses.concat(data.data);
+      page++;
+    }
+  } catch (error) {
+    console.error(error);
+    return null;
   }
 
   const namesSet = new Set();
@@ -200,7 +207,13 @@ function atualizarProgressoFeitos() {
 
 
 async function init() {
-  bosses = await loadAllBosses();
+  const loaded = await loadAllBosses();
+  if (!loaded) {
+    renderBosses([], "Não foi possível carregar os dados");
+    return;
+  }
+
+  bosses = loaded;
   statusMap = loadBossStatus();
   renderBosses(bosses);
   setupSearch();
