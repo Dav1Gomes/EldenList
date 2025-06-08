@@ -50,7 +50,7 @@ function createBossCard(boss) {
   checkbox.addEventListener("change", () => {
     statusMap[boss.id] = checkbox.checked;
     saveBossStatus(statusMap);
-    atualizarProgressoFeitos(); // Atualiza a barra de progresso ao marcar/desmarcar
+    atualizarProgressoFeitos(); 
   });
 
   card.appendChild(image);
@@ -64,8 +64,14 @@ function createBossCard(boss) {
   return card;
 }
 
-function renderBosses(list) {
+function renderBosses(list, emptyMessage) {
   grid.innerHTML = "";
+
+  if (!list.length) {
+    if (emptyMessage) grid.innerHTML = `<p>${emptyMessage}</p>`;
+    return;
+  }
+
   list.forEach((boss) => grid.appendChild(createBossCard(boss)));
 }
 
@@ -73,20 +79,18 @@ function setupSearch() {
   searchInput.addEventListener("input", () => {
     const term = searchInput.value.toLowerCase();
     const filtered = bosses.filter((b) => b.name.toLowerCase().includes(term));
-    renderBosses(filtered);
+    renderBosses(filtered, "Nenhum boss encontrado.");
   });
 }
 
 document.getElementById("btnFeitos").addEventListener("click", () => {
   const feitos = bosses.filter((b) => statusMap[b.id]);
-  grid.innerHTML = feitos.length ? "" : "<p>Nenhum boss marcado como feito ainda.</p>";
-  renderBosses(feitos);
+  renderBosses(feitos, "Nenhum boss marcado como feito ainda.");
 });
 
 document.getElementById("btnNaoFeitos").addEventListener("click", () => {
   const naoFeitos = bosses.filter((b) => !statusMap[b.id]);
-  grid.innerHTML = naoFeitos.length ? "" : "<p>Todos os bosses já foram marcados como feitos!</p>";
-  renderBosses(naoFeitos);
+  renderBosses(naoFeitos, "Todos os bosses já foram marcados como feitos!");
 });
 
 document.getElementById("btnExportar").addEventListener("click", () => {
@@ -159,22 +163,17 @@ function atualizarProgressoBarra(qtdFeitos, total) {
 }
 
 function atualizarProgressoFeitos() {
-  const statusMap = loadBossStatus();
+  const status = loadBossStatus();
   let feitos = 0;
 
-  fetch("https://eldenring.fanapis.com/api/bosses?limit=500")
-    .then((res) => res.json())
-    .then((data) => {
-      const total = data.data.length;
+  bosses.forEach((boss) => {
+    if (status[boss.id]) feitos++;
+  });
 
-      data.data.forEach((boss) => {
-        if (statusMap[boss.id]) feitos++;
-      });
-
-      const porcentagem = ((feitos / total) * 100).toFixed(1);
-      document.getElementById("textoProgresso").textContent = `${feitos} de ${total} bosses feitos (${porcentagem}%)`;
-      document.getElementById("barraProgresso").style.width = `${porcentagem}%`;
-    });
+  const total = bosses.length;
+  const porcentagem = ((feitos / total) * 100).toFixed(1);
+  document.getElementById("textoProgresso").textContent = `${feitos} de ${total} bosses feitos (${porcentagem}%)`;
+  document.getElementById("barraProgresso").style.width = `${porcentagem}%`;
 }
 
 
