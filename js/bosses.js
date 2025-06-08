@@ -30,6 +30,28 @@ function saveBossStatus(status) {
   localStorage.setItem("bossStatus", JSON.stringify(status));
 }
 
+const CACHE_KEY = "bossesCache";
+const CACHE_DURATION = 24 * 60 * 60 * 1000; 
+
+function loadBossesCache() {
+  const raw = localStorage.getItem(CACHE_KEY);
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw);
+    if (Date.now() - parsed.timestamp > CACHE_DURATION) return null;
+    return parsed.data;
+  } catch (e) {
+    return null;
+  }
+}
+
+function saveBossesCache(data) {
+  localStorage.setItem(
+    CACHE_KEY,
+    JSON.stringify({ timestamp: Date.now(), data })
+  );
+}
+
 function createBossCard(boss) {
   const card = document.createElement("div");
   card.className = "boss-card";
