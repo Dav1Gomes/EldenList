@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://cdn.discordapp.com/attachments/653757012844347403/1380419783727775795/icone_elden.png?ex=6843cf9b&is=68427e1b&hm=8302557cc66e86aa95821356b37093f9c938bdc97fe97612078f006fb317571a&" alt="Elden List Logo" width="120">
+  <img src="https://img.icons8.com/?size=512&id=9MYh0e9cR79M&format=png" alt="Elden List Logo" width="120">
 </p>
 
 # Elden List
